@@ -1,0 +1,6 @@
+pandas
+pyodbc
+openpyxl
+thefuzz
+azure-identity
+msgraph-sdk

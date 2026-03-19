@@ -1,0 +1,20 @@
+# Excel
+*.xlsx
+
+# Python cache
+__pycache__/
+**/__pycache__/
+**/.pycache_tmp
+
+# Logs
+logs/
+**/logs/
+
+#dists et builds
+**/dist/
+**/build/
+
+# Certificats et config sensibles
+**/MDMPythonGraphV2.cer
+**/MDMPythonGraphV2.pfx
+**/config.cfg

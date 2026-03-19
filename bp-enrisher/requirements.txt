@@ -1,0 +1,7 @@
+pandas
+requests
+thefuzz
+openpyxl
+msgraph-sdk
+msgraph-core
+azure-identity

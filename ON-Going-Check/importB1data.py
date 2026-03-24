@@ -3,7 +3,7 @@ from typing import Iterable
 
 import pandas as pd
 import pyodbc
-from logger import _log_helpers
+from logger import log_helpers
 
 SERVER = "192.168.20.18"
 DATABASES = [
@@ -67,7 +67,7 @@ def _build_conn_str(driver: str, database: str) -> str:
 def _load_partner_changes_for_database(
     date_debut_sql: str, date_fin_sql: str, database: str, driver: str, logger=None
 ) -> pd.DataFrame:
-    _debug, _log, _warn, _error = _log_helpers(logger)
+    _debug, _log, _warn, _error = log_helpers(logger)
     _log(f"[B1] -> DB: {database}")
     conn_str = _build_conn_str(driver, database)
     sql = f"SET NOCOUNT ON; EXEC [{database}].[dbo].[SNE_Partners_Changes_Log] ?, ?"
@@ -102,7 +102,7 @@ def _load_partner_changes_for_database(
 def load_partner_changes(
     date_debut: date, date_fin: date, databases: Iterable[str] | None = None, logger=None
 ) -> pd.DataFrame:
-    _debug, _log, _warn, _error = _log_helpers(logger)
+    _debug, _log, _warn, _error = log_helpers(logger)
     try:
         selected_databases = [db.strip() for db in (databases or DATABASES) if db and db.strip()]
         if not selected_databases:
@@ -148,7 +148,7 @@ if __name__ == "__main__":
     from logger import logger as app_logger
 
     log = app_logger()
-    _debug, _log, _warn, _error = _log_helpers(log)
+    _debug, _log, _warn, _error = log_helpers(log)
     try:
         df = load_partner_changes(date(2022, 2, 1), date(2026, 2, 18), logger=log)
         _log(f"[B1] Sample:\n{df.head().to_string(index=False)}")

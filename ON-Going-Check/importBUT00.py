@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import pandas as pd
-from logger import _log_helpers
+from logger import log_helpers
 
 PATH = Path(r"\\interfacessap.file.core.windows.net\interfacess4p\data_mdm_export\BP_BUT000.csv")
 
@@ -28,7 +28,7 @@ def _pick_column(df: pd.DataFrame, name: str, index: int) -> pd.Series:
 
 
 def load_but00(path: Path = PATH, logger=None) -> pd.DataFrame:
-    _debug, _log, _warn, _error = _log_helpers(logger)
+    _debug, _log, _warn, _error = log_helpers(logger)
     try:
         df = pd.read_csv(path, dtype=str, sep=";", on_bad_lines="warn")
 
@@ -74,6 +74,6 @@ if __name__ == "__main__":
     from logger import logger as app_logger
 
     log = app_logger()
-    _debug, _log, _warn, _error = _log_helpers(log)
+    _debug, _log, _warn, _error = log_helpers(log)
     df = load_but00(logger=log)
     _log(f"[BUT000] Sample:\n{df.head().to_string(index=False)}")

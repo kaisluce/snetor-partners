@@ -1,13 +1,13 @@
 from pathlib import Path
 
 import pandas as pd
-from logger import _log_helpers
+from logger import log_helpers
 
 PATH = Path(r"\\interfacessap.file.core.windows.net\interfacess4p\data_mdm_export\BP_ADRC.csv")
 
 
 def load_adrc(path: Path | str = PATH, logger=None) -> pd.DataFrame:
-    _debug, log, _warn, _error = _log_helpers(logger)
+    _debug, log, _warn, _error = log_helpers(logger)
     log(f"Loading ADRC from {path}")
     df = pd.read_csv(
         path,

@@ -2,7 +2,7 @@ from pathlib import Path
 from datetime import datetime
 
 import pandas as pd
-from logger import _log_helpers
+from logger import log_helpers
 
 PATH = Path(r"\\snetor-docs\Users\MDM\001_BUSINESS PARTNER\000_Compliance\On Going Screening\On Going Screening.csv")
 CHECKS_ROOT = Path(r"\\snetor-docs\Users\MDM\001_BUSINESS PARTNER\000_Compliance\BP-ON_GOING_SCREEN")
@@ -104,7 +104,7 @@ def _resolve_source(path: Path = PATH) -> Path:
 
 
 def load_ongoing_screen(path: Path = PATH, logger=None) -> pd.DataFrame:
-    _debug, _log, _warn, _error = _log_helpers(logger)
+    _debug, _log, _warn, _error = log_helpers(logger)
     try:
         source = _resolve_source(path)
         if source.suffix.lower() == ".csv":
@@ -139,7 +139,7 @@ if __name__ == "__main__":
     from logger import logger as app_logger
 
     log = app_logger()
-    _debug, _log, _warn, _error = _log_helpers(log)
+    _debug, _log, _warn, _error = log_helpers(log)
     df = load_ongoing_screen(logger=log)
     df["Case name"] = (
         df["Case name"]

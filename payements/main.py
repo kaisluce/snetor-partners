@@ -17,16 +17,12 @@ BASE_DIR = Path(r"\\snetor-docs\Users\MDM\998_CHecks\BP-TERMS_OF_PAYMENT_CLIENT"
 
 SUBJECT = "Cient Terms of Payment"
 
-CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Vous trouverez en piece jointe le rapport listant les clients dont les conditions de paiement KNB1 et KNVV ne correspondent pas.<br>"
-    "Bonne journee."
+ISSUE_TEMPLATE = (
+    "Vous trouverez en piece jointe le rapport listant les clients dont les conditions de paiement KNB1 et KNVV ne correspondent pas."
 )
 
-NO_CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Toutes les conditions de paiement KNB1 / KNVV sont conformes.<br>"
-    "Bonne journee."
+NO_ISSUE_TEMPLATE = (
+    "Toutes les conditions de paiement KNB1 / KNVV sont conformes."
 )
 
 
@@ -90,7 +86,7 @@ def main() -> None:
         has_issues = not issue_df.empty
         send_quality_check_mail(
             subject=SUBJECT,
-            body=CHANGE_TEMPLATE if has_issues else NO_CHANGE_TEMPLATE,
+            body=ISSUE_TEMPLATE if has_issues else NO_ISSUE_TEMPLATE,
             file_path=issue_output if has_issues else None,
             logger=log,
         )

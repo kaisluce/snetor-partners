@@ -21,21 +21,16 @@ BASE_DIR = Path(__file__).resolve().parent
 #DEFAULT_RECIPIENT = "masterdata@snetor.com"
 DEFAULT_RECIPIENT = "k.luce@snetor.com"
 CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Vous trouverez en piece jointe le rapport listant les partenaires avec une Tax Classification mal renseignee.<br>"
-    "Bonne journee."
+    "Vous trouverez en piece jointe le rapport listant les partenaires avec une Tax Classification mal renseignee."
 )
 
 NO_CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Toutes les donnees de Tax Classification sont conformes.<br>"
-    "Bonne journee."
+    "Toutes les donnees de Tax Classification sont conformes."
 )
 ERROR_TEMPLATE = (
     "<p>"
-    "Une erreur est survenue lors du controle Tax Classification. Voici le message d'erreur :<br><br>"
-    "{error_message}<br><br>"
-    "Bonne journee."
+    "Une erreur est survenue lors du controle Tax Classification. Voici le message d'erreur :"
+    "{error_message}"
     "</p>"
 )
 

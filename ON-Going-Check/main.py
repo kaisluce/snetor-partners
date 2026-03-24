@@ -7,9 +7,8 @@ from mails import send_quality_check_mail
 
 import pandas as pd
 import json
-from datetime import datetime
+from datetime import date, timedelta
 from pathlib import Path
-from datetime import date
 
 
 try:
@@ -105,15 +104,11 @@ BASE_SAVE_PATH = Path(r"\\snetor-docs\Users\MDM\998_CHecks\Bp-ON_GOING_SCREEN")
 SUBJECT = "On Going Screen"
 
 CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Vous trouverez en piece jointe le rapport listant les partenaires avec des anomalies On Going Screen.<br>"
-    "Bonne journee."
+    "Vous trouverez en piece jointe le rapport listant les partenaires avec des anomalies On Going Screen."
 )
 
 NO_CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Toutes les donnees On Going Screen sont conformes.<br>"
-    "Bonne journee."
+    "Toutes les donnees On Going Screen sont conformes."
 )
 
 
@@ -164,7 +159,7 @@ def main():
     log = app_logger(mail=True, subject=SUBJECT, path=__file__)
     _debug, _log, _warn, _error = log_helpers(log)
     try:
-        b1_changes = load_partner_changes(date(2000, 1, 1), TODAY_DT.date(), logger=log)
+        b1_changes = load_partner_changes(date.today() - timedelta(weeks=2), TODAY_DT.date(), logger=log)
         b1_changes = b1_changes.rename(columns={"Nom Partenaire": "Name"})
         b1_changes = b1_changes[~b1_changes["Code Partenaire"].str[:2].isin(["FG", "FS"])]
         b1_changes.to_excel(r"C:\Users\K.luce\OneDrive - SNETOR\Documents\partners\ON-Going-Check\b1_partner_changes.xlsx", index=False)

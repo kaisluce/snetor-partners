@@ -22,15 +22,11 @@ PATH = r"\\snetor-docs\Users\MDM\998_CHecks\BP-TAX_CLASSIFICATION"
 SUBJECT = "Tax Classification"
 
 CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Vous trouverez en piece jointe le rapport listant les partenaires avec des anomalies Tax Classification.<br>"
-    "Bonne journee."
+    "Vous trouverez en piece jointe le rapport listant les partenaires avec des anomalies Tax Classification."
 )
 
 NO_CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Toutes les donnees Tax Classification sont conformes.<br>"
-    "Bonne journee."
+    "Toutes les donnees Tax Classification sont conformes."
 )
 
 

@@ -19,13 +19,11 @@ BASE_DIR = Path(r"\\snetor-docs\Users\MDM\998_CHecks\BP-TERMS_OF_PAYMENT_SUPPLIE
 SUBJECT = "Supplier Terms of Payment"
 
 ISSUE_TEMPLATE = (
-    "Vous trouverez en piece jointe le rapport listant les fournisseurs dont les conditions de paiement LFB1 et LFM1 ne correspondent pas.<br>"
-    "Bonne journee."
+    "Vous trouverez en piece jointe le rapport listant les fournisseurs dont les conditions de paiement LFB1 et LFM1 ne correspondent pas."
 )
 
 NO_ISSUE_TEMPLATE = (
-    "Toutes les conditions de paiement LFB1 / LFM1 sont conformes.<br>"
-    "Bonne journee."
+    "Toutes les conditions de paiement LFB1 / LFM1 sont conformes."
 )
 
 

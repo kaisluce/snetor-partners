@@ -25,13 +25,11 @@ SAVE_PATH = Path(r"\\snetor-docs\Users\MDM\998_CHecks\BP-TAX_EXEMPTION")
 SUBJECT = "Tax Exemption"
 
 CHANGE_TEMPLATE = (
-    "Vous trouverez en piece jointe le rapport listant les partenaires avec des anomalies Tax Exemption.<br>"
-    "Bonne journee."
+    "Vous trouverez en piece jointe le rapport listant les partenaires avec des anomalies Tax Exemption."
 )
 
 NO_CHANGE_TEMPLATE = (
-    "Toutes les donnees Tax Exemption sont conformes.<br>"
-    "Bonne journee."
+    "Toutes les donnees Tax Exemption sont conformes."
 )
 
 

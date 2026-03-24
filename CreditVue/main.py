@@ -74,15 +74,11 @@ SNETOR_ENTITY: set[str] = {
 }
 
 CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Vous trouverez en piece jointe le rapport listant les clients avec des anomalies Credit Vue.<br>"
-    "Bonne journee."
+    "Vous trouverez en piece jointe le rapport listant les clients avec des anomalies Credit Vue."
 )
 
 NO_CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Toutes les donnees Credit Vue sont conformes.<br>"
-    "Bonne journee."
+    "Toutes les donnees Credit Vue sont conformes."
 )
 SUBJECT = "Credit Vue"
 

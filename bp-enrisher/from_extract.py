@@ -18,15 +18,11 @@ CREDS = r"\\interfacessap.file.core.windows.net\interfacess4p\data_mdm_export\BP
 OUTPUT_DIR = r"\\snetor-docs\Users\MDM\998_CHecks\BP-ENRISHED_BP"
 
 CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Vous trouverez en piece jointe le rapport listant les partenaires dont les informations ont ete completees.<br>"
-    "Bonne journee."
+    "Vous trouverez en piece jointe le rapport listant les partenaires dont les informations ont ete completees."
 )
 
 NO_CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Aucun BP n'a ete corrige.<br>"
-    "Bonne journee."
+    "Aucun BP n'a ete corrige."
 )
 SUBJECT = "BP Enrichment"
 

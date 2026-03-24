@@ -17,15 +17,11 @@ BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_ROOT = Path(r"\\snetor-docs\Users\MDM\998_CHecks\BP-ACCOUNT_ASSIGNMENT")
 
 CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Vous trouverez en piece jointe le rapport listant les partenaires avec un Customer Type mal renseigne.<br>"
-    "Bonne journee."
+    "Vous trouverez en piece jointe le rapport listant les partenaires avec un Customer Type mal renseigne."
 )
 
 NO_CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Toutes les assignations Customer Type sont conformes.<br>"
-    "Bonne journee."
+    "Toutes les assignations Customer Type sont conformes."
 )
 
 SUBJECT = "Customer Assignement"

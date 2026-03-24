@@ -23,24 +23,16 @@ SUBJECT_STREET = "Address Street Check"
 SUBJECT_LANGUAGE = "Address Language Check"
 
 STREET_CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Vous trouverez en piece jointe la liste des BPs dont la street 2 ou 3 ne sont pas à vides.<br>"
-    "Bonne journee."
+    "Vous trouverez en piece jointe la liste des BPs dont la street 2 ou 3 ne sont pas à vides."
 )
 LANGUAGE_CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Vous trouverez en piece jointe le rapport des BPs avec les mauvaises Langues.<br>"
-    "Bonne journee."
+    "Vous trouverez en piece jointe le rapport des BPs avec les mauvaises Langues."
 )
 NO_ISSUES_STREET_TEMPLATE = (
-    "Bonjour,<br>"
-    "Toutes aucun champ Street 2 ou 3 n'est renseigné.<br>"
-    "Bonne journee."
+    "Toutes aucun champ Street 2 ou 3 n'est renseigné."
 )
 NO_ISSUES_LANGUAGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Toutes les langues sont conformes.<br>"
-    "Bonne journee."
+    "Toutes les langues sont conformes."
 )
 
 

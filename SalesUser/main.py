@@ -13,15 +13,11 @@ SAVE_PATH = r"\\snetor-docs\Users\MDM\998_CHecks\BP-SALES_USER"
 SUBJECT = "Sales User"
 
 CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Vous trouverez en piece jointe le rapport listant les partenaires avec des anomalies Sales User.<br>"
-    "Bonne journee."
+    "Vous trouverez en piece jointe le rapport listant les partenaires avec des anomalies Sales User."
 )
 
 NO_CHANGE_TEMPLATE = (
-    "Bonjour,<br>"
-    "Toutes les donnees Sales User sont conformes.<br>"
-    "Bonne journee."
+    "Toutes les donnees Sales User sont conformes."
 )
 
 def _normalize_users(value) -> list[str]:

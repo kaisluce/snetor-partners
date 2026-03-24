@@ -22,3 +22,7 @@ def load_adrc(path: Path = PATH) -> pd.DataFrame:
     df = df[df["Addr. No."] != ""].reset_index(drop=True)
     df = df.drop_duplicates(subset=["Addr. No."], keep="first").reset_index(drop=True)
     return df
+
+if __name__ == "__main__":
+    df = load_adrc()
+    print(df.describe)

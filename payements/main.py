@@ -13,7 +13,21 @@ from importKNVV import load_knvv
 from mails import send_quality_check_mail
 from logger import logger, log_helpers
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(r"\\snetor-docs\Users\MDM\998_CHecks\BP-TERMS_OF_PAYMENT_CLIENT")
+
+SUBJECT = "Cient Terms of Payment"
+
+CHANGE_TEMPLATE = (
+    "Bonjour,<br>"
+    "Vous trouverez en piece jointe le rapport listant les clients dont les conditions de paiement KNB1 et KNVV ne correspondent pas.<br>"
+    "Bonne journee."
+)
+
+NO_CHANGE_TEMPLATE = (
+    "Bonjour,<br>"
+    "Toutes les conditions de paiement KNB1 / KNVV sont conformes.<br>"
+    "Bonne journee."
+)
 
 
 def build_payment_check():
@@ -28,16 +42,9 @@ def build_payment_check():
     )
 
     df = knb1.merge(
-        knvv[
-            [
-                "partner_id_org_com",
-                "SalesOrg",
-                "Created By KNVV",
-                "Created On KNVV",
-                "Terms of Payment KNVV",
-            ]
-        ],
-        on="partner_id_org_com",
+        knvv,
+        left_on=["Customer", "Company Code"],
+        right_on=["Customer", "SalesOrg"],
         how="left",
     )
 
@@ -59,11 +66,38 @@ def build_payment_check():
 
 
 def main() -> None:
-    df = build_payment_check()
-    output = BASE_DIR / f"PAYEMENTS_{datetime.now():%Y%m%d_%H%M%S}.xlsx"
-    df.to_excel(output, index=False)
-    print(f"Saved: {output}")
-    print(f"Rows: {len(df)}")
+    log = logger(mail=True, subject=SUBJECT, path=__file__)
+    _, log, _, error = log_helpers(log)
+    log("Start payment check")
+    try:
+        df = build_payment_check()
+
+        ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        run_dir = BASE_DIR / ts
+        run_dir.mkdir(parents=True, exist_ok=True)
+
+        output = run_dir / "payements.xlsx"
+        issue_output = run_dir / "payements_issue.xlsx"
+
+        df.to_excel(output, index=False)
+        issue_df = df[~(df["Terms Match"] == True)]
+        issue_df.to_excel(issue_output, index=False)
+
+        log(f"Saved full report: {output}")
+        log(f"Saved issue report: {issue_output} ({len(issue_df)} rows)")
+        log(f"Total rows: {len(df)}")
+
+        has_issues = not issue_df.empty
+        send_quality_check_mail(
+            subject=SUBJECT,
+            body=CHANGE_TEMPLATE if has_issues else NO_CHANGE_TEMPLATE,
+            file_path=issue_output if has_issues else None,
+            logger=log,
+        )
+        log("Email sent")
+    except Exception:
+        error("Failure during payment check", exc_info=True)
+        raise
 
 
 if __name__ == "__main__":

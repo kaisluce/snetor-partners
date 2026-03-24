@@ -9,6 +9,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pandas as pd
+from lingua import Language, LanguageDetectorBuilder
 from mails import send_quality_check_mail
 from logger import log_helpers, logger as Logger
 
@@ -57,6 +58,19 @@ FRANCOPHONE_COUNTRIES: set[str] = {
 }
 
 BAD_LINES: dict[str, list[list[str]]] = {}
+
+_BE_DETECTOR = (
+    LanguageDetectorBuilder
+    .from_languages(Language.FRENCH, Language.DUTCH, Language.GERMAN, Language.ENGLISH)
+    .build()
+)
+
+_LINGUA_TO_SAP: dict[Language, str] = {
+    Language.FRENCH: "F",
+    Language.DUTCH:  "E",
+    Language.GERMAN: "E",
+    Language.ENGLISH: "E",
+}
 
 def _normalize_bp(series: pd.Series) -> pd.Series:
     """
@@ -182,20 +196,39 @@ def load_adrc(path: Path = PATH_ADRC) -> pd.DataFrame:
     """
     fetches the ADRC table
     """
-    df = _read_csv_with_badlines(path, sep=";")
+    df = _read_csv_with_badlines(path, dtype=str, sep=";")
+    print(df.describe())
     if df.shape[1] <= 29:
         raise ValueError(f"BP_ADRC.csv malformed: expected at least 30 columns, got {df.shape[1]}")
     # User mapping: A=Addr. No., L=BP Country, T=Language, U=Street 5, AA/AB/AC/AD=Street/2/3/4
     df = df.iloc[:, [0, 11, 19, 26, 27, 28, 29, 20]].copy()
     df.columns = ["Addr. No.", "BP Country", "Language", "Street", "Street 2", "Street 3", "Street 4", "Street 5"]
     df["BP Country"] = df["BP Country"].fillna("").astype(str).str.strip().str.upper()
-    df["Addr. No."] = _normalize_addr(df["Addr. No."])
-    df["Language"] = df["Language"].fillna("").astype(str).str.strip().str.upper()
-    for c in ["Street", "Street 2", "Street 3", "Street 4", "Street 5"]:
-        df[c] = df[c].fillna("").astype(str).str.strip()
-    df = df.drop_duplicates(subset=["Addr. No."], keep="first").reset_index(drop=True)
-    return df
+    return df.reset_index(drop=True)
 
+ 
+
+def diag_BE(row: pd.Series) -> str:
+    streets_list = row[["Street", "Street 2", "Street 3", "Street 4", "Street 5"]]
+    streets_str = " ".join([s for s in streets_list if str(s).strip() != ""])
+
+    if not streets_str.strip():
+        return "No street found for BE diag"
+
+    detected = _BE_DETECTOR.detect_language_of(streets_str)
+    if detected is None:
+        return "No language detected with street"
+
+
+    expected_language = _LINGUA_TO_SAP.get(detected)
+    sap_lang = str(row.get("Language", "")).strip().upper()
+
+    if expected_language is None:
+        return "No language detected with street"
+
+    if sap_lang == expected_language:
+        return "OK"
+    return "Wrong Language"
 
 def build_diagnostic_df() -> pd.DataFrame:
     """
@@ -261,11 +294,16 @@ def build_diagnostic_df() -> pd.DataFrame:
         ]
     ].copy()
 
+    # Applies lingua-based language detection for Belgian BPs
+    be_mask = result["BP Country"] == "BE"
+    if be_mask.any():
+        result.loc[be_mask, "Language diag"] = result[be_mask].apply(diag_BE, axis=1).values
+
     print(f"[INFO] init BP={len(but000)}")
     print(f"[INFO] no_address={(result['Empty street 2 - 3?']=='No address found').sum()}")
     print(f"[INFO] wrong_language={(result['Language diag']=='Wrong language').sum()}")
     return result
-
+    
 
 def main() -> None:
     app_logger = Logger(mail=True, subject="Address-Language", path=__file__)

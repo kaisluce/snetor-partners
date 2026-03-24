@@ -16,9 +16,7 @@ def load_knvv() -> pd.DataFrame:
     df["Created On KNVV"] = df["Created On KNVV"].fillna("")
     df["Terms of Payment KNVV"] = df["Terms of Payment KNVV"].fillna("Missing")
     df = df[(df["Customer"] != "") & (df["SalesOrg"] != "")].reset_index(drop=True)
-
-    df["partner_id_org_com"] = df["Customer"] + "_" + df["SalesOrg"]
-    df = df.drop_duplicates(subset=["partner_id_org_com"], keep="first").reset_index(drop=True)
+    df = df.drop_duplicates(subset=["Customer", "SalesOrg"], keep="first").reset_index(drop=True)
     return df
 
 

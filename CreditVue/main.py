@@ -147,43 +147,6 @@ def build_customer_role_df(logger=None) -> pd.DataFrame:
     merged = merged[existing_cols + remaining_cols]
     _log(f"DataFrame built with {len(merged)} rows.")
     return merged
-    # but100 = load_but100()
-    # but00 = load_but00()
-    # knvv = load_knvv()
-
-    # --- Ancien traitement des roles (conserve pour reference) ---
-    # roles = ["FLCU01", "UKM000"]
-    # but100 = but100[but100["Role"].isin(roles)]
-    # roles_pivot = (
-    #     but100.assign(Present=1)
-    #     .pivot_table(
-    #         index="Customer",
-    #         columns="Role",
-    #         values="Present",
-    #         aggfunc="max",
-    #         fill_value=0,
-    #     )
-    #     .reset_index()
-    # )
-
-    # # Base sur KNVV pour conserver une ligne par BP + SalesOrg.
-    # #df = knvv.merge(but00, on="Customer", how="left")
-    # #df = df.merge(roles_pivot, on="Customer", how="left")
-    # df = roles_pivot.merge(but00, on="Customer", how="outer")
-    # for role in roles:
-    #     if role not in df.columns:
-    #         df[role] = 0
-    #     else:
-    #         df[role] = df[role].fillna(0).astype(int)
-    # df["Role diag"] = (df[roles] == 0).any(axis=1).map({True: "Missing role", False: "OK"})
-
-    # # Nettoyage noms et filtres demandes.
-    # df["Name"] = df["Name"].fillna("").astype(str).str.strip()
-    # df = df[~df["Name"].str.startswith("#", na=False)].reset_index(drop=True)
-    # df = df[~_is_snetor_name(df["Name"])].reset_index(drop=True)
-    # df = df[df["Customer"].astype(str).str.startswith("1", na=False)].reset_index(drop=True)
-    # df = df[df["Customer"].str.len() == 7]
-    #return df
 
 
 def main() -> None:
@@ -193,13 +156,16 @@ def main() -> None:
 
     try:
         _log("Starting Customer Vue check.")
+        # Dossier par execution pour historiser les controles.
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         run_dir = BASE_DIR / f"customer_vue_check_{timestamp}"
         run_dir.mkdir(parents=True, exist_ok=True)
 
+        # Create the report
         df = build_customer_role_df(logger=log)
         issue_df = df[df["Diag"] != "OK"].reset_index(drop=True)
 
+        # Saves the issue report separatly from the full and sends it by mail if exists else sends mail with no attachement
         full_output = run_dir / "01_customer_vue_full.xlsx"
         issue_output = run_dir / "02_customer_vue_issues.xlsx"
         df.to_excel(full_output, index=False)

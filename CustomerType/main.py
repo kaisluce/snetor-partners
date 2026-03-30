@@ -17,14 +17,14 @@ BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_ROOT = Path(r"\\snetor-docs\Users\MDM\998_CHecks\BP-ACCOUNT_ASSIGNMENT")
 
 CHANGE_TEMPLATE = (
-    "Vous trouverez en piece jointe le rapport listant les partenaires avec un Customer Type mal renseigne."
+    "Vous trouverez en piece jointe le rapport listant les partenaires avec un Account Assignment Group mal renseigne."
 )
 
 NO_CHANGE_TEMPLATE = (
     "Toutes les assignations Customer Type sont conformes."
 )
 
-SUBJECT = "Customer Assignement"
+SUBJECT = "Customer Assignment"
 
 INTERCO_NAMES: set[str] = {
     "SNETOR",

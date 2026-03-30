@@ -104,7 +104,7 @@ BASE_SAVE_PATH = Path(r"\\snetor-docs\Users\MDM\998_CHecks\Bp-ON_GOING_SCREEN")
 SUBJECT = "On Going Screen"
 
 CHANGE_TEMPLATE = (
-    "Vous trouverez en piece jointe le rapport listant les partenaires avec des anomalies On Going Screen."
+    "Vous trouverez en piece jointe le rapport listant les partenaires dont la compliance est manquante."
 )
 
 NO_CHANGE_TEMPLATE = (
@@ -162,7 +162,6 @@ def main():
         b1_changes = load_partner_changes(date.today() - timedelta(weeks=2), TODAY_DT.date(), logger=log)
         b1_changes = b1_changes.rename(columns={"Nom Partenaire": "Name"})
         b1_changes = b1_changes[~b1_changes["Code Partenaire"].str[:2].isin(["FG", "FS"])]
-        b1_changes.to_excel(r"C:\Users\K.luce\OneDrive - SNETOR\Documents\partners\ON-Going-Check\b1_partner_changes.xlsx", index=False)
         _log(f"B1 partner changes loaded: {len(b1_changes)} rows")
 
         but00 = load_but00(logger=log)
@@ -233,7 +232,8 @@ def main():
         with_folder_B1.to_excel(run_dir / "results_B1_with_folder.xlsx")
 
         with_folder_B1.rename(columns={"Code Partenaire": "Bp"}, inplace=True)
-        with_folder_B1 = with_folder_B1[[
+        
+        with_folder_b1_output_cols = [
             "Bp",
             "Name",
             "Case Name",
@@ -246,7 +246,13 @@ def main():
             "Traitement",
             "Utilisateur",
             "source_database",
-        ]]
+        ]
+        
+        for col in with_folder_b1_output_cols:
+            if col not in with_folder_B1.columns:
+                with_folder_B1[col] = ""
+        
+        with_folder_B1 = with_folder_B1[with_folder_b1_output_cols]
 
         compliance_checked = pd.concat([with_folder, with_folder_B1])
         

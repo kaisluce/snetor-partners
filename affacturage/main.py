@@ -62,10 +62,10 @@ CHANGE_TEMPLATE = (
 )
 
 NO_CHANGE_TEMPLATE = (
-    "Toutes les donnees d'affacturage sont conformes."
+    "Toutes les donnees liées à l'AR Pledging sont conformes."
 )
 
-SUBJECT = "Missing AR Pledging FFqy"
+SUBJECT = "Missing AR Pledging FF"
 
 def build_affacturage_df() -> pd.DataFrame:
 

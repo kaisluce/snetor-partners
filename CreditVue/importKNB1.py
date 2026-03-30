@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pandas as pd
 
-PATH = Path(r"\\interfacessap.file.core.windows.net\interfacess4p\data_mdm_export\BP_KNB1.csv")
+PATH = Path(r"\\interfacessap.file.core.windows.net\interfacess4p\data_mdm_export\BP__KNB1.csv")
 
 
 def _norm_customer(series: pd.Series) -> pd.Series:

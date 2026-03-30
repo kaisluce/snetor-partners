@@ -15,7 +15,7 @@ from logger import logger, log_helpers
 
 BASE_DIR = Path(r"\\snetor-docs\Users\MDM\998_CHecks\BP-TERMS_OF_PAYMENT_CLIENT")
 
-SUBJECT = "Cient Terms of Payment"
+SUBJECT = "Customer Terms of Payment"
 
 ISSUE_TEMPLATE = (
     "Vous trouverez en piece jointe le rapport listant les clients dont les conditions de paiement KNB1 et KNVV ne correspondent pas."

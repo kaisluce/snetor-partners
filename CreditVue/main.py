@@ -105,7 +105,7 @@ def build_customer_role_df(logger=None) -> pd.DataFrame:
     - Merge UKM/KNB1 (outer) sur la cle `customer_salesorg`.
     - Conserve un couple Customer/SalesOrg de reference et enrichit avec BUT000.
     - Calcule un diagnostic : OK, missing knb1 entry, missing credit vue.
-    - Filtre les lignes techniques (#), les entites SNETOR et les clients hors perimetre.
+    - Filtre les lignes archivées (#), les entites SNETOR et les clients hors perimetre.
     """
     _debug, _log, _warn, _error = log_helpers(logger)
     ukm = load_ukm()
@@ -122,8 +122,8 @@ def build_customer_role_df(logger=None) -> pd.DataFrame:
         how="outer",
     )
     merged = merged.merge(but00, on="Customer", how="left")
-    merged["Present in KNB1"] = merged["Present in KNB1"].fillna(False)
-    merged["Present in UKM"] = merged["Present in UKM"].fillna(False)
+    merged["Present in KNB1"] = merged["Present in KNB1"].fillna(False).infer_objects(copy=False)
+    merged["Present in UKM"] = merged["Present in UKM"].fillna(False).infer_objects(copy=False)
     merged["Diag"] = "OK"
     merged.loc[~merged["Present in KNB1"], "Diag"] = "missing knb1 entry"
     merged.loc[merged["Present in KNB1"] & ~merged["Present in UKM"], "Diag"] = "missing credit vue"

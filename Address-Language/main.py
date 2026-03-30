@@ -183,9 +183,11 @@ def load_but000(path: Path = PATH_BUT000) -> pd.DataFrame:
 
     df = df[~df[BP].isin(["10000010", "10000012"])]
 
+    # If the Name column is empty but it has a last and first name, it is a person and not a company, should be specified
     personnes = (df[NAME] == "") & ~((df[LAST_NAME] == "") & (df[FIRST_NAME] == ""))
     personnes_diez = personnes & (df[LAST_NAME].str.contains("#", na=False) | df[FIRST_NAME].str.contains("#", na=False))
     df.loc[personnes, NAME] = "(person)" + (df.loc[personnes, LAST_NAME] + " " + df.loc[personnes, FIRST_NAME]).str.strip()
+    # Excluding archived people
     df = df[~personnes_diez].reset_index(drop=True)
     
     
@@ -205,7 +207,7 @@ def load_but020(path: Path = PATH_BUT020) -> pd.DataFrame:
     df.columns = [BP, ADDR_NO]
     df[BP] = _normalize_bp(df[BP])
     df[ADDR_NO] = _normalize_addr(df[ADDR_NO])
-    idx = df.groupby(BP)[ADDR_NO].idxmax()
+    idx = df.groupby(BP)[ADDR_NO].idxmax()                      # Keeps only the biggest address number since it's the latest
     return df.loc[idx, [BP, ADDR_NO]].reset_index(drop=True)
 
 
@@ -226,17 +228,27 @@ def load_adrc(path: Path = PATH_ADRC) -> pd.DataFrame:
             
 
 def diag_BE(row: pd.Series) -> str:
+    """
+    Fonction to treat the case of belgian BP. Uses Lingua to determine the right language based on the address.
+    """
+    
+    # Buils the full street string
     streets_cols = [STREET, STREET_2, STREET_3, STREET_4, STREET_5]
     streets_list = [row.get(col) if str(row.get(col, "")).strip() != "" else None for col in streets_cols]
     streets_str = " ".join([str(s) for s in streets_list if s is not None])
 
+    # If the address is empty, no need to check
     if not streets_str.strip():
         return DIAG_NO_STREET
 
+    # Check how high are the changes of the text being french using lingua
     fr_confidence = _BE_DETECTOR.compute_language_confidence(streets_str, Language.FRENCH)
+    
+    # If it returns 0, it's probably not detected the language
     if fr_confidence == 0.0:
         return DIAG_NO_LANG_DETECTED
 
+    # Low threshold for maximum possible results since it can be precisd after getting the report
     expected_language = "F" if fr_confidence >= 0.3 else "E"
     sap_lang = str(row.get(LANGUAGE, "")).strip().upper()
 

@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 
-PATH = Path(__file__).resolve().parent / "LFM1.xlsx"
+PATH = Path(r"\\interfacessap.file.core.windows.net\interfacess4p\data_mdm_export\BP__LFM1.csv")
 
 COLS = {
     0 : "Supplier",
@@ -13,7 +13,7 @@ COLS = {
 }
 
 def load_lfm1() -> pd.DataFrame:
-    df = pd.read_excel(PATH, dtype=str,)
+    df = pd.read_csv(PATH, sep=";", dtype=str,)
     df = df.iloc[:, [key for key in COLS.keys()]]
     df.columns = COLS.values()
     df = df[df["Supplier"] != ""].reset_index(drop=True)

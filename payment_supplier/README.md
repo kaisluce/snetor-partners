@@ -17,7 +17,7 @@ python main.py
 | Fichier | Colonnes extraites |
 |---|---|
 | `BP_LFB1.csv` | Supplier, Company Code, Created On, Created By, Terms of Payment |
-| `BP_LFM1.csv` | Supplier, Company Code, Created On, Created By, Terms of Payment |
+| `BP__LFM1.csv` | Supplier, Company Code, Created On, Created By, Terms of Payment |
 | `BP_BUT000.csv` | BP (renommé Supplier), Name |
 
 Chemin réseau commun : `\\interfacessap.file.core.windows.net\interfacess4p\data_mdm_export\`

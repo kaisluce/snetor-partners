@@ -321,11 +321,11 @@ if __name__ == "__main__":
         
         log(f"Got {len(df)} rows to preceed")
         debug(df[['BP', 'VAT', 'siret', 'siren', 'Name 1', 'missing siren', 'missing siret', 'missing vat']].describe(include='all'))
-        df = df[df['missing siren'] | df['missing siret'] | df['missing vat']]
-        df = df[~(df["missing siren"] & df["missing siret"] & df["missing vat"])].head(10)
-        df = df.tail(1500)
-        df = df.head(50)
-        df['original missing siren'] = df['missing siren']
+        # df = df[df['missing siren'] | df['missing siret'] | df['missing vat']]
+        # df = df[~(df["missing siren"] & df["missing siret"] & df["missing vat"])].head(10)
+        # df = df.tail(1500)
+        # df = df.head(50)
+        # df['original missing siren'] = df['missing siren']
         df['original missing siret'] = df['missing siret']
         df['original missing vat'] = df['missing vat']
     except Exception:
@@ -373,7 +373,7 @@ if __name__ == "__main__":
         edited.to_excel(edited_file, index=False)
         if edited.empty:send_quality_check_mail(subject=SUBJECT, body=NO_CHANGE_TEMPLATE, logger=logger)
         else:
-            send_quality_check_mail(subject=SUBJECT, body=CHANGE_TEMPLATE, attachments=edited_file, logger=logger)
+            send_quality_check_mail(subject=SUBJECT, body=CHANGE_TEMPLATE, file_path=edited_file, logger=logger)
         log(f"Fichier édité ecrit dans: {edited_file}")
     except Exception:
         error("Failed to write output file", exc_info=True)

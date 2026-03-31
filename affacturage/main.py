@@ -122,7 +122,7 @@ def main() -> None:
         if len(issue_df) > 0:
             issue_df.to_excel(issue_output, index=False)
             _log("Sending report email with issue attachment.")
-            send_quality_check_mail(subject = SUBJECT, body=CHANGE_TEMPLATE, attachments=issue_output, logger=log)
+            send_quality_check_mail(subject = SUBJECT, body=CHANGE_TEMPLATE, file_path=issue_output, logger=log)
         else:
             _log("No issue found, sending no-change email.")
             send_quality_check_mail(subject = SUBJECT, body=NO_CHANGE_TEMPLATE, logger=log)
